@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/alarm/alarm.iml" filepath="$PROJECT_DIR$/alarm/alarm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/arduino/arduino.iml" filepath="$PROJECT_DIR$/arduino/arduino.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dbcp/dbcp.iml" filepath="$PROJECT_DIR$/dbcp/dbcp.iml" />
       <module fileurl="file://$PROJECT_DIR$/hello.iml" filepath="$PROJECT_DIR$/hello.iml" />
       <module fileurl="file://$PROJECT_DIR$/leetcode/leetcode.iml" filepath="$PROJECT_DIR$/leetcode/leetcode.iml" />
       <module fileurl="file://$PROJECT_DIR$/socket/socket.iml" filepath="$PROJECT_DIR$/socket/socket.iml" />
