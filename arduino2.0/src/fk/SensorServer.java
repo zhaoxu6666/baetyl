@@ -27,7 +27,7 @@ class DataUpdate implements Runnable{
     @Override
     public void run(){
         //String connectedIp = socket.getInetAddress().getHostAddress();
-		InetAddress connectedIp = receivePacket.getAddress();
+	InetAddress connectedIp = receivePacket.getAddress();
         System.out.println(connectedIp + " connected.....");
 
 
@@ -61,46 +61,46 @@ class DataUpdate implements Runnable{
 		case "1":
 			setUp1(location,name,sentence);
 //			System.out.println(Static.thread1+"1111111111111111111111111");
-			if(Detect.thread1==""){
+			if(Static.thread1==""){
 				thread(location,name);
 			}else {
-				Detect.i1 = 1;
+				Static.i1 = 1;
 			}
 			break;
 		case "2":
 			setUp2(location,name,sentence);
 //			System.out.println(Static.thread2+"22222222222222222222222");
-			if(Detect.thread2==""){
+			if(Static.thread2==""){
 				thread(location,name);
 			}else {
-				Detect.i2 = 1;
+				Static.i2 = 1;
 			}
 			break;
 		case "3":
 			setUp3(location,name,sentence);
 //			System.out.println(Static.thread3+"3333333333333333333");
-			if(Detect.thread3==""){
+			if(Static.thread3==""){
 				thread(location,name);
 			}else {
-				Detect.i3 = 1;
+				Static.i3 = 1;
 			}
 			break;
 		case "4":
 			setUp4(location,name,sentence);
 //			System.out.println(Static.thread4+"4444444444444444444");
-			if(Detect.thread4==""){
+			if(Static.thread4==""){
 				thread(location,name);
 			}else {
-				Detect.i4 = 1;
+				Static.i4 = 1;
 			}
 			break;
 		case "5":
 			setUp1(location,name,sentence);
 //			System.out.println(Static.thread5+"55555555555555555555");
-			if(Detect.thread5==""){
+			if(Static.thread5==""){
 				thread(location,name);
 			}else {
-				Detect.i5 = 1;
+				Static.i5 = 1;
 			}
 			break;
 		default:
@@ -110,29 +110,22 @@ class DataUpdate implements Runnable{
 		System.out.println("end");
         
     }
-    //create thread Detect
+    //create thread
     public void thread(Location location,String name){
-			Detect t = new Detect(location,name);
+			timer t = new timer(location,name);
 			Thread t1 = new Thread(t);
 			t1.start();
-			Detect.setThread(name,t1.getName());
+			Static.setThread(name,t1.getName());
 			System.out.println(t1.getName()+"&&&&&&&&&&&&&&&&&&&&&&&&"+name);
 	}
-
-	//create thread Flicker
-	public void threadF(String name){
-		Flicker t = new Flicker(name);
-		Thread t1 = new Thread(t);
-		t1.start();
-		Flicker.setThreadF(name,t1.getName());
-		System.out.println(t1.getName()+"*********************************"+name);
-	}
-	//判断阈值、设置显隐功能
+    //
     public void setUp1(Location location,String name,String sentence) {
 		TH(location,name,sentence);
 		V(location,sentence);
 		L(location,sentence);
     }
+    
+    //SO
     public void setUp2(Location location,String name,String sentence) {
 		TH(location,name,sentence);
 		L(location,sentence);
@@ -143,18 +136,14 @@ class DataUpdate implements Runnable{
         	if(Double.parseDouble(data3)<Static.a) {
         		location.getVolField().setForeground(Color.BLACK);
         		location.getVolField().setText(data3);
-				Flicker.setSensorV(name,0);
         	}else {
         		location.getVolField().setForeground(Color.RED);
         		location.getVolField().setText(data3);
-				if (Flicker.getThreadAttitude(name)==""){
-					System.out.println("进入创建线程2222222222222");
-					Flicker.setSensorV(name,1);
-					threadF(name);  //create Flicker thread
-				}
         	}
         }
+
     }
+
     public void setUp3(Location location,String name,String sentence) {
 		TH(location,name,sentence);
 		String[] ss = sentence.split("\n");
@@ -166,15 +155,9 @@ class DataUpdate implements Runnable{
         	if(Integer.parseInt(data2)<Static.p) {
         		location.getVolField().setForeground(Color.BLACK);
         		location.getVolField().setText(data2);
-				Flicker.sensor3V = 0;
         	}else {
         		location.getVolField().setForeground(Color.RED);
         		location.getVolField().setText(data2);
-				if (Flicker.threadF3==""){
-					System.out.println("进入创建线程");
-					Flicker.sensor3V = 1;
-					threadF(name);  //create Flicker thread
-				}
         	}
         }
         if(sensorId3 == Sensors.LIGSENSOR.getId()){   //震动模块
@@ -182,19 +165,14 @@ class DataUpdate implements Runnable{
         		data3 = "警告";
         		location.getLigField().setForeground(Color.RED);
         		location.getLigField().setText(data3);
-        		if (Flicker.threadF3==""){
-					System.out.println("进入创建线程");
-					Flicker.sensor3L = 1;
-					threadF(name);  //create Flicker thread
-				}
-			}else {
+        	}else {
         		data3 = "正常";
         		location.getLigField().setForeground(Color.BLACK);
         		location.getLigField().setText(data3);
-				Flicker.sensor3L = 0;
         	}
         }
     }
+    
     public void setUp4(Location location,String name,String sentence) {
     	TH(location,name,sentence);
 		V(location,sentence);
@@ -205,20 +183,13 @@ class DataUpdate implements Runnable{
     		if(Integer.parseInt(data3)>Static.f) {
     			location.getLigField().setForeground(Color.RED);
     			location.getLigField().setText(data3);
-				if (Flicker.getThreadAttitude(name)==""){
-					System.out.println("进入创建线程");
-					Flicker.setSensorL(name,1);
-					threadF(name);  //create Flicker thread
-				}
     		}else {
     			location.getLigField().setForeground(Color.BLACK);
     			location.getLigField().setText(data3);
-				Flicker.confDisvisible(name);
     		}
     	}
     }
 
-    //判断阈值、设置显隐功能
 	public void TH(Location location,String name,String sentence) {
 		String[] ss = sentence.split("\n");
 		int sensorId = Integer.parseInt(ss[0]);
@@ -230,30 +201,18 @@ class DataUpdate implements Runnable{
 			if (Integer.parseInt(data) < Static.getT(name)) {
 				location.getTempField().setForeground(Color.BLACK);
 				location.getTempField().setText(data);
-				Flicker.setSensorT(name,0);
 			} else {
 				location.getTempField().setForeground(Color.RED);
 				location.getTempField().setText(data);
-				if (Flicker.getThreadAttitude(name)==""){
-					System.out.println("进入创建线程");
-					Flicker.setSensorT(name,1);  //attitude conf
-					threadF(name);  //create Flicker thread
-				}
 			}
 		}
 		if (sensorId1 == Sensors.HUMSENSOR.getId()) {
 			if (Integer.parseInt(data1) < Static.getH(name)) {
 				location.getHumField().setForeground(Color.BLACK);
 				location.getHumField().setText(data1);
-				Flicker.setSensorH(name,0);
 			} else {
 				location.getHumField().setForeground(Color.RED);
 				location.getHumField().setText(data1);
-				if (Flicker.getThreadAttitude(name)==""){
-					System.out.println("进入创建线程");
-					Flicker.setSensorH(name,1);
-					threadF(name);  //create Flicker thread
-				}
 			}
 		}
 	}
@@ -261,22 +220,15 @@ class DataUpdate implements Runnable{
 		String[] ss = sentence.split("\n");
 		int sensorId2 = Integer.parseInt(ss[4]);
 		String data2 = ss[5];
-		String name = location.getName();
 		if(sensorId2 == Sensors.VOLSENSOR.getId()) {  //噪音模块
 			if (Integer.parseInt(data2) == 0) {
 				data2 = "正常";
 				location.getVolField().setForeground(Color.BLACK);
 				location.getVolField().setText(data2);
-				Flicker.setSensorV(name,0);
 			} else {
 				data2 = "警告";
 				location.getVolField().setForeground(Color.RED);
 				location.getVolField().setText(data2);
-				if (Flicker.getThreadAttitude(name)==""){
-					System.out.println("进入创建线程");
-					Flicker.setSensorV(name,1);  //attitude conf
-					threadF(name);  //create Flicker thread
-				}
 			}
 		}
 	}
@@ -284,26 +236,19 @@ class DataUpdate implements Runnable{
 		String[] ss = sentence.split("\n");
 		int sensorId3 = Integer.parseInt(ss[6]);
 		String data3 = ss[7];
-		String name = location.getName();
-		if (sensorId3 == Sensors.LIGSENSOR.getId()) {
-			if (Integer.parseInt(data3) == 0) {
+		if(sensorId3 == Sensors.LIGSENSOR.getId()){
+			if(Integer.parseInt(data3)==0) {
 				data3 = "警告";
 				location.getLigField().setForeground(Color.RED);
 				location.getLigField().setText(data3);
-				System.out.println(Flicker.getThreadAttitude(name));
-				if (Flicker.getThreadAttitude(name) == "") {
-					System.out.println("进入创建线程2222222222llllllllll");
-					Flicker.setSensorL(name, 1);  //attitude conf
-					threadF(name);  //create Flicker thread
-				}
-			} else {
+			}else {
 				data3 = "正常";
 				location.getLigField().setForeground(Color.BLACK);
 				location.getLigField().setText(data3);
-				Flicker.setSensorL(name, 0);
 			}
 		}
 	}
+
 }
 
 
@@ -335,7 +280,6 @@ public class SensorServer {
 
     public static void main(String[] args) throws IOException {
         JFramDemo jf = JFramDemo.getInstance();
-
         Map<String, JComponent> tempHashmap = (Map<String, JComponent>)jf.getTempHashMap();
         Map<String, JComponent> humHashMap = (Map<String, JComponent>)jf.getHumiHashmap();
         Map<String, JComponent> volHashMap = (Map<String, JComponent>)jf.getVolHashMap();
@@ -343,23 +287,36 @@ public class SensorServer {
 
         List<Location> locations = getSensors(tempHashmap, humHashMap, volHashMap, ligHashMap);
 
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
+         for(Location sensor: locations){
+            System.out.println(sensor+"((((((((((");
+        }
 
-        DatagramSocket serverSocket1 = new DatagramSocket(1234);
+        ExecutorService executorService = Executors.newSingleThreadExecutor();  //线程池
+
+        //ServerSocket serverSocket = new ServerSocket(1234);
+        //Socket socket = null;
+	
+        DatagramSocket serverSocket1 = new DatagramSocket(1234);  //UDP连接 并监听1234端口
 
         System.out.println("start...");
 
-		while (true){
 
+		while (true){
+			//socket = serverSocket.accept();
 			byte[] receiveData = new byte[1024];
 
-			DatagramPacket receivePacket = new DatagramPacket(receiveData,receiveData.length);
+//			System.out.println("^^^^^^^^^^^^^"+receiveData.length);
 
-			serverSocket1.receive(receivePacket);
+			DatagramPacket receivePacket = new DatagramPacket(receiveData,receiveData.length); //设置数据包的大小
+
+			serverSocket1.receive(receivePacket); //接收数据包从这个socket
 
 			System.out.println("received UDP");
 
 			executorService.execute(new DataUpdate(receivePacket, locations));  //异步处理
+
+//	    	System.out.println(">>>>>>>>>>>>>>>>>>>>received done!");
+
         }
     }
 }
